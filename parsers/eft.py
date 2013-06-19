@@ -86,7 +86,7 @@ of dictionaries that represent each of the items included in the EFT Fit.
 class EftParser(object):
 
     def parse(self, eft_text):
-        raise NotImplemented()
+        raise NotImplementedError("Please implement me.")
 
 
 EXAMPLE_EFT_TEXT = """[Heron]
@@ -110,7 +110,6 @@ Small Gravity Capacitor Upgrade I
 
 def test_parser():
     """This test needs to actually very the result"""
-    EXAMPLE
 
     parser = EftParser()
 
