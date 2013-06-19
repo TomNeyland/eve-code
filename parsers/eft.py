@@ -25,15 +25,17 @@ class EftParser(object):
                         if lines.find("slot") > -1:
                                 eft_lines.remove(lines)
 
-                for lines in eft_lines[1:]:
-                        #search for drones
-                        if (lines[len(lines)-1].isdigit()) & (lines[len(lines)-2]=="x") :
-                                dict_list.append({"name": lines[0:len(lines)-3], "charge_name": "", "count": int(lines[len(lines)-1])})
-                                break
-                        
-                        #normal mods
+                for lines in eft_lines[1:]:                        
                         if lines.find(",") < 0:
-                                dict_list.append({"name": lines, "charge_name": "", "count": 1})
+                                #search for drones
+                                temp = lines.split()
+                                temp = temp[len(temp)-1]
+                                if temp[0] == "x":
+                                        #cut off the drone quantity to get the name
+                                        drone_name = lines[0:len(lines)-len(temp)-1]
+                                        dict_list.append({"name": drone_name, "charge_name": "", "count": int(temp[1:])})
+                                else:
+                                        dict_list.append({"name": lines, "charge_name": "", "count": 1})
    
                         #weapons with charges
                         else:
@@ -77,9 +79,9 @@ Large Anti-Thermal Screen Reinforcer I
 [empty rig slot]
 
 
-Hammerhead II x5
-Warrior II x5
-Vespa EC-600 x5
+Hammerhead II x25
+Warrior II x95
+Vespa EC-600 x333
 """
 
     result = parser.parse(example_eft)
