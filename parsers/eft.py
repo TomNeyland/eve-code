@@ -1,3 +1,5 @@
+"""A parser for EFT blocks."""
+
 class EftParser(object):
 
         def parse(self, eft):
@@ -15,9 +17,12 @@ class EftParser(object):
                 #create empty lists to contain item names, charge names and counts
                 dict_list = []
 
-                #remove empty lines
+                #remove empty lines and empty slots
                 for lines in eft_lines[1:]:
                         if len(lines) == 0:
+                                eft_lines.remove(lines)
+
+                        if lines.find("slot") > -1:
                                 eft_lines.remove(lines)
 
                 for lines in eft_lines[1:]:
@@ -37,47 +42,45 @@ class EftParser(object):
 
 
                 result = {"ship_type": shipname, "fit_name": fitname, "items": dict_list}
-                print result
-    	
+                return result
+        	
 def test_parser():
-    """This test needs to actually very the result"""
 
     parser = EftParser()
 
-    example_eft ="""[Apocalypse, Ratting sansha]
+    example_eft ="""[Vindicator, Shieldicator]
+Tracking Enhancer II
+Tracking Enhancer II
+True Sansha Capacitor Power Relay
+Federation Navy Magnetic Field Stabilizer
+Federation Navy Magnetic Field Stabilizer
+Federation Navy Magnetic Field Stabilizer
+Federation Navy Magnetic Field Stabilizer
 
-Heat Sink II
-Heat Sink II
-Heat Sink II
-Damage Control II
-Armor EM Hardener II
-Armor Thermic Hardener II
-Dark Blood Large Armor Repairer
+Stasis Webifier II
+100MN Afterburner II
+Medium Shield Booster II
+Sensor Booster II, Scan Resolution Script
+Kinetic Deflection Field II
 
-Fleeting Propulsion Inhibitor I
-Cap Recharger II
-Cap Recharger II
-Cap Recharger II
+Neutron Blaster Cannon II, Void L
+Neutron Blaster Cannon II, Void L
+Neutron Blaster Cannon II, Void L
+Neutron Blaster Cannon II, Void L
+Neutron Blaster Cannon II, Void L
+Neutron Blaster Cannon II, Void L
+Neutron Blaster Cannon II, Void L
+[empty high slot]
 
-Mega Pulse Laser II, Multifrequency L
-Mega Pulse Laser II, Multifrequency L
-Mega Pulse Laser II, Multifrequency L
-Mega Pulse Laser II, Multifrequency L
-Mega Pulse Laser II, Multifrequency L
-Mega Pulse Laser II, Multifrequency L
-Mega Pulse Laser II, Multifrequency L
-Mega Pulse Laser II, Multifrequency L
-
-Large Semiconductor Memory Cell I
-Large Auxiliary Nano Pump I
-Large Auxiliary Nano Pump I
+Large Hybrid Burst Aerator II
+Large Anti-Thermal Screen Reinforcer I
+[empty rig slot]
 
 
 Hammerhead II x5
-Hobgoblin II x5
+Warrior II x5
+Vespa EC-600 x5
 """
 
     result = parser.parse(example_eft)
-
-
-test_parser()
+    print result
