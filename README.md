@@ -60,3 +60,12 @@ Output:
         }, ...]
 }
 ```
+
+
+parsers
+-------
+
+Provides parsers for data formats related to Eve-Online and 3rd party utilities
+
+* EftParser - Creates a structured representation of a ship-fit from EFT text blocks;
+* KillmailParser - Not Implemented
