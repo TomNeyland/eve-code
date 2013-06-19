@@ -1,12 +1,50 @@
-"""A parser for EFT blocks.
+class EftParser(object):
+
+        def parse(self, eft):
+                eft_lines = eft.splitlines()
+                
+                #get first line and extract ship name and fit name
+                to_parse = eft_lines[0]
+                to_parse = to_parse.replace("[","")
+                to_parse = to_parse.replace("]","")
+                to_parse = to_parse.split(",")
+                shipname = to_parse[0]
+                fitname = to_parse[1]
+                fitname = fitname[1:]
+
+                #create empty lists to contain item names, charge names and counts
+                dict_list = []
+
+                #remove empty lines
+                for lines in eft_lines[1:]:
+                        if len(lines) == 0:
+                                eft_lines.remove(lines)
+
+                for lines in eft_lines[1:]:
+                        #search for drones
+                        if (lines[len(lines)-1].isdigit()) & (lines[len(lines)-2]=="x") :
+                                dict_list.append({"name": lines[0:len(lines)-3], "charge_name": "", "count": int(lines[len(lines)-1])})
+                                break
+                        
+                        #normal mods
+                        if lines.find(",") < 0:
+                                dict_list.append({"name": lines, "charge_name": "", "count": 1})
+   
+                        #weapons with charges
+                        else:
+                                posdel = lines.find(",")
+                                dict_list.append({"name": lines[0:posdel], "charge_name": lines[posdel+2:], "count": 1})
 
 
-Input Format:
--------------
+                result = {"ship_type": shipname, "fit_name": fitname, "items": dict_list}
+                print result
+    	
+def test_parser():
+    """This test needs to actually very the result"""
 
-An EFT text block.
+    parser = EftParser()
 
-[Apocalypse, Ratting sansha]
+    example_eft ="""[Apocalypse, Ratting sansha]
 
 Heat Sink II
 Heat Sink II
@@ -37,82 +75,9 @@ Large Auxiliary Nano Pump I
 
 Hammerhead II x5
 Hobgoblin II x5
-
-
-Output Format:
---------------
-
-A dictonary with the keys 'ship_type', 'fit_name', and 'items'. The value for 'items' is a list
-of dictionaries that represent each of the items included in the EFT Fit.
-
-{
-    "ship_type": "Apocalypse",
-    "fit_name": "Ratting sansha",
-    "items": [
-        {"name": "Mega Pulse Laser II", "charge_name": "Multifrequency L", "count": 1},
-        {"name": "Mega Pulse Laser II", "charge_name": "Multifrequency L", "count": 1},
-        {"name": "Mega Pulse Laser II", "charge_name": "Multifrequency L", "count": 1},
-        {"name": "Mega Pulse Laser II", "charge_name": "Multifrequency L", "count": 1},
-        {"name": "Mega Pulse Laser II", "charge_name": "Multifrequency L", "count": 1},
-        {"name": "Mega Pulse Laser II", "charge_name": "Multifrequency L", "count": 1},
-        {"name": "Mega Pulse Laser II", "charge_name": "Multifrequency L", "count": 1},
-        {"name": "Mega Pulse Laser II", "charge_name": "Multifrequency L", "count": 1},
-
-        {"name": "Cap Recharger II", "charge_name": ""},
-        {"name": "Cap Recharger II", "charge_name": "", "count": 1},
-        {"name": "Cap Recharger II", "charge_name": "", "count": 1},
-        {"name": "Fleeting Propulsion Inhibitor I", "charge_name": "", "count": 1},
-
-        {"name": "Heat Sink II", "charge_name": "", "count": 1},
-        {"name": "Heat Sink II", "charge_name": "", "count": 1},
-        {"name": "Heat Sink II", "charge_name": "", "count": 1},
-        {"name": "Damage Control II", "charge_name": "", "count": 1},
-        {"name": "Armor EM Hardener II", "charge_name": "", "count": 1},
-        {"name": "Armor Thermic Hardener II", "charge_name": "", "count": 1},
-        {"name": "Dark Blood Large Armor Repairer", "charge_name": "", "count": 1},
-
-        {"name": "Large Semiconductor Memory Cell I", "charge_name": "", "count": 1},
-        {"name": "Large Auxiliary Nano Pump I", "charge_name": "", "count": 1},
-        {"name": "Large Auxiliary Nano Pump I", "charge_name": "", "count": 1},
-
-        {"name": "Hammerhead II", "charge_name": "", "count": 5},
-        {"name": "Hobgoblin II", "charge_name": "", "count": 5},
-    ]
-}
-
 """
 
-
-class EftParser(object):
-
-    def parse(self, eft_text):
-        raise NotImplementedError("Please implement me.")
+    result = parser.parse(example_eft)
 
 
-EXAMPLE_EFT_TEXT = """[Heron]
-Warp Core Stabilizer
-Warp Core Stabilizer
-
-Relic Analyzer I
-Data Analyzer I
-1MN Afterburner I
-Scan Rangefinding Array I
-Scan Rangefinding Array I
-
-Core Probe Launcher I
-Prototype Cloaking Device I
-Salvager I
-
-Small Gravity Capacitor Upgrade I
-Small Gravity Capacitor Upgrade I
-"""
-
-
-def test_parser():
-    """This test needs to actually very the result"""
-
-    parser = EftParser()
-
-    result = parser.parse(EXAMPLE_EFT_TEXT)
-
-    print result
+test_parser()
