@@ -248,6 +248,6 @@ Print All MetaItem versions of a Merlin:
  
  
  
-## Dependencies ##
+#### eve_django Dependencies ####
  
 * django >= 1.4
