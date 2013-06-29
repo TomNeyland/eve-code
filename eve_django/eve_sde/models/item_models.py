@@ -1,3 +1,4 @@
+from collections import defaultdict
 from django.db.models import Model, Manager, ForeignKey, IntegerField, FloatField, CharField, TextField, ManyToManyField, OneToOneField, DateTimeField
 from django.conf import settings
 from common_models import StrMixin, filtered_manager, BaseStaticItem, BaseMapItem, Unit
@@ -77,6 +78,62 @@ class Item(Model, StrMixin):
     class Meta:
         app_label = 'eve_sde'
         db_table = 'invTypes'
+
+    @property
+    def reprocessed_materials(self):
+        return dict((requirement.material, requirement.quantity) for requirement in self.required_materials.all().select_related('material'))
+
+    @property
+    def recycled_inputs(self):
+        return dict((requirement.material, requirement.quantity) for requirement in self.blueprint.extra_materials.all().select_related('material') if requirement.recycle)
+
+    @property
+    def recycled_input_materials(self):
+
+        recycled_materials = defaultdict(float)
+
+        for requirement, count in self.recycled_inputs.items():
+            for material, quantity in requirement.reprocessed_materials.items():
+                recycled_materials[material] = recycled_materials[material] + (quantity * count)
+
+        return dict(recycled_materials)
+
+    def real_material_requirements(self, me=0, skill=5):
+
+        real_requirements = defaultdict(float)
+
+        recycled_materials = self.recycled_input_materials
+
+        for requirement in self.required_materials.all().select_related('material'):
+
+            material = requirement.material
+
+            real_quantity = requirement.real_quantity(me=me, skill=skill) - recycled_materials.get(material, 0)
+
+            real_requirements[material] = real_quantity
+
+        return dict((material, quantity) for material, quantity in real_requirements.items() if quantity > 0.0)
+
+    def real_extra_materials(self):
+
+        real_requirements = defaultdict(float)
+
+        for requirement in self.blueprint.extra_materials.all().select_related('material'):
+
+            material = requirement.material
+
+            real_requirements[material] = (requirement.quantity * requirement.damage_per_job)
+
+        return dict(real_requirements)
+
+    def build_info(self, me=0, skill=5):
+
+        data = {
+            "material_requirements": self.real_material_requirements(me=me, skill=skill),
+            "extra_materials": self.real_extra_materials(),
+        }
+
+        return data
 
 
 class MetaGroup(Model, StrMixin):

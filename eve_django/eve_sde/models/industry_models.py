@@ -38,6 +38,26 @@ class MaterialRequirement(Model, StrMixin):
     material = ForeignKey('Item', primary_key=True, db_column='materialTypeID', related_name='used_in')
     quantity = IntegerField()
 
+    def me_waste(self, me=0, waste_factor=10):
+
+        waste = 0
+
+        if me >= 0:
+            waste = round(self.quantity * (waste_factor / 100.0) * (1.0 / (me + 1.0)))
+        else:
+            waste = round(self.quantity * (waste_factor / 100.0) * (1.0 - me))
+
+        return waste
+
+    def pe_waste(self, skill=5):
+
+        waste = round(((25.0 - (5.0 * skill)) * self.quantity) / 100.0)
+
+        return waste
+
+    def real_quantity(self, me=0, waste_factor=10, skill=5):
+        return self.quantity + self.me_waste(me=me, waste_factor=waste_factor) + self.pe_waste(skill=skill)
+
     def _display_str(self):
         return "%s x %s" % (self.material.name, self.quantity)
 
