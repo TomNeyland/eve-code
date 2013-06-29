@@ -248,7 +248,7 @@ class ReactionProduct(Model, StrMixin):
     reaction = ForeignKey('Reaction', primary_key=True, db_column='reactionTypeID', related_name='products')
     is_input = IntegerField(primary_key=True, db_column='input')
     material = ForeignKey('Item', primary_key=True, db_column='typeID', related_name='product_reactions')
-    quantity = IntegerField(null=True, blank=True)
+    raw_quantity = IntegerField(null=True, blank=True, db_column='quantity')
 
     objects = filtered_manager(is_input=0)
     default_manager = objects
