@@ -90,7 +90,7 @@ Almost all of the ForeignKey, OneToOne, ManyToOne, and Reverse relationships hav
 #### Setup ####
  
  
-* Go to the project directory: `cd eve-code/` 
+* Go to the project directory: `cd eve_django/` 
  
 * Run the initial setup script: `./initial-setup.sh` (make sure __initial-setup.sh__ and __download-sde-db.sh__ are marked as executable)
  
