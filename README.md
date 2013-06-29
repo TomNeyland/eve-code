@@ -103,7 +103,7 @@ That should be all you need to do to get started.
  
 #### Models and Relationships ####
  
-[Still in flux, here is a PNG (that doesn't help much)](FIXME.png)
+[Still in flux, here is a PNG (that doesn't help much)](https://raw.github.com/TomNeyland/eve-code/master/eve_django/current-eve-sde-models.png)
  
  
 #### Example Usage ####
