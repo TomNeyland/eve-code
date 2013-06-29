@@ -253,6 +253,10 @@ class ReactionProduct(Model, StrMixin):
     objects = filtered_manager(is_input=0)
     default_manager = objects
 
+    @property
+    def quantity(self):
+        return self.raw_quantity * (self.material.moon_mining_amount or 1)
+
     def _display_str(self):
         return "%s x %s" % (self.material.name, self.quantity)
 
