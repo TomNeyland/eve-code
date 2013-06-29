@@ -215,12 +215,19 @@ class Reaction(Item):
         app_label = 'eve_sde'
         proxy = True
 
+    def build_info(self):
+
+        return {
+            "inputs": dict((rinput.material, rinput.quantity) for rinput in self.inputs.select_related('material')),
+            "products": dict((rinput.material, rinput.quantity) for rinput in self.inputs.select_related('material')),
+        }
+
 
 class ReactionInput(Model, StrMixin):
     reaction = ForeignKey('Reaction', primary_key=True, db_column='reactionTypeID', related_name='inputs')
     is_input = IntegerField(primary_key=True, db_column='input')
     material = ForeignKey('Item', primary_key=True, db_column='typeID', related_name='input_reactions')
-    quantity = IntegerField(null=True, blank=True)
+    raw_quantity = IntegerField(null=True, blank=True, db_column='quantity')
 
     objects = filtered_manager(is_input=1)
     default_manager = objects
@@ -228,6 +235,10 @@ class ReactionInput(Model, StrMixin):
     class Meta:
         app_label = 'eve_sde'
         db_table = 'invTypeReactions'
+
+    @property
+    def quantity(self):
+        return self.raw_quantity * (self.material.moon_mining_amount or 1)
 
     def _display_str(self):
         return "%s x %s" % (self.material.name, self.quantity)

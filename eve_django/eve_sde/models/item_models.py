@@ -80,6 +80,19 @@ class Item(Model, StrMixin):
         db_table = 'invTypes'
 
     @property
+    def moon_mining_amount(self):
+        #only applies to some items.. shouldn't really be on this model
+        if self.group_id in (334, 427, 428, 429, 536, 712, 873, 913, 964, 967):
+            try:
+                amount = self.attributes.get(attribute_id=726).value
+            except:
+                amount = 0
+        else:
+            amount = 0
+
+        return amount
+
+    @property
     def reprocessed_materials(self):
         return dict((requirement.material, requirement.quantity) for requirement in self.required_materials.all().select_related('material'))
 
@@ -253,6 +266,10 @@ class ItemAttribute(Model, StrMixin):
     class Meta:
     	app_label = 'eve_sde'
         db_table = 'dgmTypeAttributes'
+
+    @property
+    def value(self):
+        return self.value_float or self.value_int
 
 
 class ItemEffect(Model, StrMixin):
