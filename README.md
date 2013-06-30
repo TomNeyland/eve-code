@@ -251,3 +251,7 @@ Print All MetaItem versions of a Merlin:
 #### eve_django Dependencies ####
  
 * django >= 1.4
+
+##### eve_bot Dependencies #####
+
+* [jabberbot](http://sourceforge.net/p/pythonjabberbot/code/ci/master/tree/)
