@@ -30,21 +30,26 @@ logger.addHandler(ch)
 
 def command(*_options, **kwargs):
     #Refactor me, use functools
+    if not kwargs and len(_options) == 1 and hasattr(_options[0], '__call__'):
+        f = _options[0]
+        f = botcmd(f)
+        return f
+    else:
+        def options_wrapper(func):
+            parser = Options.build_parser(name=func.func_name,
+                                          options=sorted(_options, key=lambda o: o.dest))
 
-    def options_wrapper(func):
-        parser = Options.build_parser(name=func.func_name,
-                                      options=sorted(_options, key=lambda o: o.dest))
+            @wraps(func)
+            def func_wrapper(self, mess, raw_args):
+                func_options = process_args(raw_args, parser=parser, **kwargs)
+                return func(self, mess, raw_args, func_options)
 
-        @wraps(func)
-        def func_wrapper(self, mess, raw_args):
-            func_options = process_args(raw_args, parser=parser, **kwargs)
-            return func(self, mess, raw_args, func_options)
+            func_wrapper = botcmd(func_wrapper)
+            func_wrapper._options = _options
+            func_wrapper.__doc__ = (func.__doc__ or "") + parser.format_help()
 
-        func_wrapper = botcmd(func_wrapper)
-        func_wrapper._options = _options
-        func_wrapper.__doc__ = (func.__doc__ or "") + parser.format_help()
+            return func_wrapper
 
-        return func_wrapper
     return options_wrapper
 
 
@@ -100,6 +105,13 @@ class EveBot(MUCJabberBot):
         item = options.item
 
         return self.send_simple_reply(mess, "\n%s Description:\n%s" % (item.name, item.description,))
+
+    @command
+    def hello_bot(self, mess, raw_args):
+
+        reply = "Hello! You just said: '%s'" % raw_args
+
+        return self.send_simple_reply(mess, reply)
 
 
 #######################
