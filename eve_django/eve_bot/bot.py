@@ -24,6 +24,56 @@ ch = logging.StreamHandler()
 logger.addHandler(ch)
 
 
+###################
+## MarketService ##
+###################
+
+class MarketService(object):
+
+    @classmethod
+    def lookup_item(self, name, partial=False):
+
+        if partial:
+            return Item.objects.filter(name__icontains=name).order_by('name')[0]
+        else:
+            return Item.objects.filter(name__istartswith=name).order_by('name')[0]
+
+    @classmethod
+    def item_stats(self, item_id=None, region_id=10000002):
+        #Needs to be better abstracted
+        import requests
+
+        url = 'http://tests.eve-trader.com/api/item-stats/%(region_id)s/%(item_id)s/?format=json' % {
+                                                                                    'item_id': item_id,
+                                                                                    'region_id': region_id
+                                                                                    }
+        r = requests.get(url)
+
+        return r.json()
+
+
+    @classmethod
+    def lookup_region(self, name, partial=False):
+        if partial:
+            return Region.objects.filter(name__icontains=name).order_by('name')[0]
+        else:
+            return Region.objects.filter(name__istartswith=name).order_by('name')[0]
+
+    @classmethod
+    def lookup_system(self, name, partial=False):
+        if partial:
+            return System.objects.filter(name__icontains=name).order_by('name')[0]
+        else:
+            return System.objects.filter(name__istartswith=name).order_by('name')[0]
+
+    @classmethod
+    def lookup_station(self, name, partial=False):
+        if partial:
+            return Station.objects.filter(name__icontains=name).order_by('name')[0]
+        else:
+            return Station.objects.filter(name__istartswith=name).order_by('name')[0]
+
+
 #########################################
 ## Magical Command + Options Decorator ##
 #########################################
