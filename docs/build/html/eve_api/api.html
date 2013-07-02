@@ -1,0 +1,408 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>eve_api &mdash; eve-code 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="eve-code 0.1.0 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">eve-code 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <span class="target" id="module-eve_code.eve_api.api"></span><div class="section" id="eve-api">
+<h1>eve_api<a class="headerlink" href="#eve-api" title="Permalink to this headline">¶</a></h1>
+<p>Provides classes that wrap Eve-Online&#8217;s API:</p>
+<ul class="simple">
+<li>PublicApi - Wraps all API calls that do not require authentication.</li>
+<li>CharacterApi - Wraps all Character related API calls, includes PublicApi functionality.</li>
+<li>CorporationApi -  Wraps all Corporation related API calls, includes PublicApi functionality.</li>
+</ul>
+<div class="section" id="usage-examples">
+<h2>Usage Examples:<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h2>
+<p>First, create an api object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">eve_code.eve_api.api</span> <span class="kn">import</span> <span class="n">PublicApi</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">api</span> <span class="o">=</span> <span class="n">PublicApi</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now, lets try getting the list of conquerable stations by calling <a class="reference internal" href="#eve_code.eve_api.api.PublicApi.conquerable_station_list" title="eve_code.eve_api.api.PublicApi.conquerable_station_list"><tt class="xref py py-func docutils literal"><span class="pre">PublicApi.conquerable_station_list()</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">api</span><span class="o">.</span><span class="n">conquerable_station_list</span><span class="p">()</span>
+<span class="go">{</span>
+<span class="go">    &#39;currentTime&#39;: datetime.datetime(2013, 6, 19, 2, 5, 37),</span>
+<span class="go">    &#39;cachedUntil&#39;: datetime.datetime(2013, 7, 19, 2, 5, 37),</span>
+<span class="go">    &#39;outposts&#39;:[</span>
+<span class="go">        {</span>
+<span class="go">            &#39;corporationID&#39;: 0,</span>
+<span class="go">            &#39;corporationName&#39;: &#39;Some Corporation&#39;,</span>
+<span class="go">            &#39;row&#39;: [],</span>
+<span class="go">            &#39;solarSystemID&#39;: 30003744,</span>
+<span class="go">            &#39;stationID&#39;: 0,</span>
+<span class="go">            &#39;stationName&#39;: &#39;A-BCDE Some Station&#39;,</span>
+<span class="go">            &#39;stationTypeID&#39;: 21645</span>
+<span class="go">        }, ...]</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<p>Example output from the character names function.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">api</span><span class="o">.</span><span class="n">character_names</span><span class="p">(</span><span class="mi">0</span><span class="p">,)</span>
+<span class="go">{</span>
+<span class="go">    &#39;cachedUntil&#39;: datetime.datetime(2013, 7, 19, 2, 5, 37),</span>
+<span class="go">    &#39;characters&#39;: [{&#39;characterID&#39;: 0, &#39;name&#39;: &#39;Foo Bar&#39;, &#39;row&#39;: []}],</span>
+<span class="go">    &#39;currentTime&#39;: datetime.datetime(2013, 6, 19, 2, 5, 37)</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="publicapi">
+<h2>PublicApi<a class="headerlink" href="#publicapi" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="eve_code.eve_api.api.PublicApi">
+<em class="property">class </em><tt class="descclassname">eve_code.eve_api.api.</tt><tt class="descname">PublicApi</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.PublicApi" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="eve_code.eve_api.api.PublicApi.alliance_list">
+<tt class="descname">alliance_list</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.PublicApi.alliance_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.PublicApi.certificate_tree">
+<tt class="descname">certificate_tree</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.PublicApi.certificate_tree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.PublicApi.character_ids">
+<tt class="descname">character_ids</tt><big>(</big><em>*character_names</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.PublicApi.character_ids" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.PublicApi.character_info">
+<tt class="descname">character_info</tt><big>(</big><em>character_id=None</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.PublicApi.character_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.PublicApi.character_name">
+<tt class="descname">character_name</tt><big>(</big><em>*character_ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.PublicApi.character_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Looks up character names via their ids.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.PublicApi.conquerable_station_list">
+<tt class="descname">conquerable_station_list</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.PublicApi.conquerable_station_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.PublicApi.error_list">
+<tt class="descname">error_list</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.PublicApi.error_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.PublicApi.fac_war_stats">
+<tt class="descname">fac_war_stats</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.PublicApi.fac_war_stats" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.PublicApi.fac_war_systems">
+<tt class="descname">fac_war_systems</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.PublicApi.fac_war_systems" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.PublicApi.fac_war_top_stats">
+<tt class="descname">fac_war_top_stats</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.PublicApi.fac_war_top_stats" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.PublicApi.jumps">
+<tt class="descname">jumps</tt><big>(</big><em>as_dict=True</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.PublicApi.jumps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.PublicApi.kills">
+<tt class="descname">kills</tt><big>(</big><em>as_dict=True</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.PublicApi.kills" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.PublicApi.ref_types">
+<tt class="descname">ref_types</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.PublicApi.ref_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.PublicApi.skill_tree">
+<tt class="descname">skill_tree</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.PublicApi.skill_tree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.PublicApi.sovereignty">
+<tt class="descname">sovereignty</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.PublicApi.sovereignty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.PublicApi.type_names">
+<tt class="descname">type_names</tt><big>(</big><em>*item_ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.PublicApi.type_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="characterapi">
+<h2>CharacterApi<a class="headerlink" href="#characterapi" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="eve_code.eve_api.api.CharacterApi">
+<em class="property">class </em><tt class="descclassname">eve_code.eve_api.api.</tt><tt class="descname">CharacterApi</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CharacterApi" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="eve_code.eve_api.api.CharacterApi.account_status">
+<tt class="descname">account_status</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CharacterApi.account_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CharacterApi.api_call">
+<tt class="descname">api_call</tt><big>(</big><em>name=''</em>, <em>auth=True</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CharacterApi.api_call" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CharacterApi.calendar_event_attendees">
+<tt class="descname">calendar_event_attendees</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CharacterApi.calendar_event_attendees" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="eve_code.eve_api.api.CharacterApi.characterID">
+<tt class="descname">characterID</tt><em class="property"> = None</em><a class="headerlink" href="#eve_code.eve_api.api.CharacterApi.characterID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CharacterApi.character_info">
+<tt class="descname">character_info</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CharacterApi.character_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CharacterApi.character_sheet">
+<tt class="descname">character_sheet</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CharacterApi.character_sheet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CharacterApi.contact_notifications">
+<tt class="descname">contact_notifications</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CharacterApi.contact_notifications" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="eve_code.eve_api.api.CharacterApi.group">
+<tt class="descname">group</tt><em class="property"> = 'char'</em><a class="headerlink" href="#eve_code.eve_api.api.CharacterApi.group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CharacterApi.mail_bodies">
+<tt class="descname">mail_bodies</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CharacterApi.mail_bodies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CharacterApi.mail_messages">
+<tt class="descname">mail_messages</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CharacterApi.mail_messages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CharacterApi.mailing_lists">
+<tt class="descname">mailing_lists</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CharacterApi.mailing_lists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CharacterApi.notification_texts">
+<tt class="descname">notification_texts</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CharacterApi.notification_texts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CharacterApi.notifications">
+<tt class="descname">notifications</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CharacterApi.notifications" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CharacterApi.research">
+<tt class="descname">research</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CharacterApi.research" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CharacterApi.skill_in_training">
+<tt class="descname">skill_in_training</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CharacterApi.skill_in_training" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CharacterApi.skill_queue">
+<tt class="descname">skill_queue</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CharacterApi.skill_queue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CharacterApi.upcoming_calendar_events">
+<tt class="descname">upcoming_calendar_events</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CharacterApi.upcoming_calendar_events" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="corporationapi">
+<h2>CorporationApi<a class="headerlink" href="#corporationapi" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="eve_code.eve_api.api.CorporationApi">
+<em class="property">class </em><tt class="descclassname">eve_code.eve_api.api.</tt><tt class="descname">CorporationApi</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CorporationApi" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="eve_code.eve_api.api.CorporationApi.container_log">
+<tt class="descname">container_log</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CorporationApi.container_log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CorporationApi.corporation_sheet">
+<tt class="descname">corporation_sheet</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CorporationApi.corporation_sheet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="eve_code.eve_api.api.CorporationApi.group">
+<tt class="descname">group</tt><em class="property"> = 'corp'</em><a class="headerlink" href="#eve_code.eve_api.api.CorporationApi.group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CorporationApi.member_medals">
+<tt class="descname">member_medals</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CorporationApi.member_medals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CorporationApi.member_security">
+<tt class="descname">member_security</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CorporationApi.member_security" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CorporationApi.member_security_log">
+<tt class="descname">member_security_log</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CorporationApi.member_security_log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CorporationApi.member_tracking_extended">
+<tt class="descname">member_tracking_extended</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CorporationApi.member_tracking_extended" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CorporationApi.member_tracking_limited">
+<tt class="descname">member_tracking_limited</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CorporationApi.member_tracking_limited" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CorporationApi.outpost_list">
+<tt class="descname">outpost_list</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CorporationApi.outpost_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CorporationApi.outpost_service_detail">
+<tt class="descname">outpost_service_detail</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CorporationApi.outpost_service_detail" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CorporationApi.shareholders">
+<tt class="descname">shareholders</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CorporationApi.shareholders" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CorporationApi.starbase_detail">
+<tt class="descname">starbase_detail</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CorporationApi.starbase_detail" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CorporationApi.starbase_list">
+<tt class="descname">starbase_list</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CorporationApi.starbase_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="eve_code.eve_api.api.CorporationApi.titles">
+<tt class="descname">titles</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#eve_code.eve_api.api.CorporationApi.titles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">eve_api</a><ul>
+<li><a class="reference internal" href="#usage-examples">Usage Examples:</a></li>
+<li><a class="reference internal" href="#publicapi">PublicApi</a></li>
+<li><a class="reference internal" href="#characterapi">CharacterApi</a></li>
+<li><a class="reference internal" href="#corporationapi">CorporationApi</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/eve_api/api.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">eve-code 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Thomas Neyland.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>
