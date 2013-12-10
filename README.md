@@ -14,7 +14,7 @@ Provides classes that wrap Eve-Online's API:
 * CorporationApi -  Wraps all Corporation related API calls, includes PublicApi functionality.
 
 
-**Usagge**
+**Usage**
 
 Import the API class you need.
 ```
